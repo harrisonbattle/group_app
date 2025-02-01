@@ -7,19 +7,17 @@ export default function App() {
   const [flash, setFlash] = useState<FlashMode>('off');
   const [photo, setPhoto] = useState<string | null>(null);
   const [permission, requestPermission] = useCameraPermissions();
-  const cameraRef = useRef<CameraView | null>(null);
+  const cameraRef = useRef<CameraView | null>(null); //This is where reference is weird, dont know if should use useState instead for camera
   const [isCameraReady, setIsCameraReady] = useState(false);
 
   useEffect(() => {
     return () => {
-      // Cleanup function (important for camera resources)
       if (cameraRef.current) {
-        // Example: Stop any ongoing processes related to the camera if necessary
       }
     };
   }, [facing, flash]);
 
-  const setCameraRef = (ref: CameraView | null) => { // Explicit type annotation is KEY
+  const setCameraRef = (ref: CameraView | null) => { //Confused about reference to camera
     cameraRef.current = ref;
     setIsCameraReady(!!ref);
   };
@@ -29,7 +27,7 @@ export default function App() {
   }
 
   if (!permission.granted) {
-    return (
+    return ( // Granting permission for camera, not sure if it works on android, have not been able to test it
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
         <Button onPress={requestPermission} title="Grant Permission" />
@@ -37,15 +35,15 @@ export default function App() {
     );
   }
 
-  function toggleCameraFacing() {
+  function toggleCameraFacing() { //Toggling camera facing forward or back, dont touch
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
-  function toggleCameraFlash() {
+  function toggleCameraFlash() { //Toggling flash, dont touch
     setFlash(current => (current === 'off' ? 'on' : 'off'));
   }
 
-  async function takePhoto() {
+  async function takePhoto() { //Need work on this function to take photo
     if (cameraRef.current && isCameraReady) {
       try {
         const photoData = await cameraRef.current.takePictureAsync();
@@ -68,7 +66,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {photo ? (
+      {photo ? ( //Allows for retaking, should be able to leave this alone
         <View style={styles.previewContainer}>
           <Image source={{ uri: photo }} style={styles.preview} />
           <Pressable onPress={retakePhoto} style={styles.retakeButton}>
@@ -80,8 +78,8 @@ export default function App() {
           style={styles.container_cont}
           facing={facing}
           flash={flash}
-          ref={setCameraRef} // Use the callback ref
-          onCameraReady={() => {}} // Still required
+          ref={setCameraRef} // This callback reference is not working, something to do with import CameraView, Camera is a class or something
+          onCameraReady={() => {}}
         >
           <View style={styles.camera}>
             <Pressable onPress={toggleCameraFacing} style={styles.flipcamerabutton}>
@@ -100,6 +98,7 @@ export default function App() {
   );
 }
 
+//Please delete some of these as we find necessary
 const styles = StyleSheet.create({
   container: {
     flex: 1,
