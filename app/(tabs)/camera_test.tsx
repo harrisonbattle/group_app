@@ -1,6 +1,7 @@
 import { CameraView, CameraType, FlashMode, useCameraPermissions } from 'expo-camera';
 import { useState, useRef, useEffect } from 'react';
 import { Button, StyleSheet, Text, View, Pressable, Image } from 'react-native';
+import * as MediaLibrary from 'expo-media-library'
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -9,6 +10,8 @@ export default function App() {
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView | null>(null); //This is where reference is weird, dont know if should use useState instead for camera
   const [isCameraReady, setIsCameraReady] = useState(false);
+  const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
+
 
   useEffect(() => {
     return () => {
@@ -26,11 +29,12 @@ export default function App() {
     return <View />;
   }
 
-  if (!permission.granted) {
+  if (!permission?.granted || !mediaPermission?.granted) {
     return ( // Granting permission for camera, not sure if it works on android, have not been able to test it
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="Grant Permission" />
+        <Button onPress={requestPermission} title="Grant Camera Permission" />
+        <Button onPress={requestMediaPermission} title="Grant Media Permission" />
       </View>
     );
   }
@@ -49,6 +53,7 @@ export default function App() {
         const photoData = await cameraRef.current.takePictureAsync();
         if (photoData?.uri) {
           setPhoto(photoData.uri);
+          console.log(photoData.uri);
         } else {
           console.error("Photo capture failed: No URI");
         }
@@ -109,36 +114,43 @@ const styles = StyleSheet.create({
   flashcamerabutton: {
     color: 'white',
     position: 'absolute',
-    top: -10,
-    right: 120,
+    top: 10,
+    right: 20,
   },
   captureButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#386C5F',
+    position: 'absolute',
+    bottom: 30,
     padding: 20,
-    bottom: -550,
     borderRadius: 20,
+    right: -70,
   },
   retakeButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: 'red',
-    borderRadius: 5,
+    position: 'absolute',
+    bottom: 80,
+    padding: 20,
+    backgroundColor: '#386C5F',
+    borderRadius: 20,
   },
   previewContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'black',
+    width: '100%',
+    height: '100%',
   },
   preview: {
     width: '100%',
     height: '80%',
-    resizeMode: 'contain',
+    resizeMode: 'cover',
   },
   container_cont: {
-    flex: 1,
-    padding: 100,
+    top: 10,
+    width: '100%',
+    height: '90%',
     alignItems: 'center',
+    resizeMode: 'cover',
     backgroundColor: '#386C5F',
   },
   message: {
@@ -151,8 +163,8 @@ const styles = StyleSheet.create({
   flipcamerabutton: {
     color: 'white',
     position: 'absolute',
-    top: -10,
-    right: -125,
+    top: 10,
+    left: 20,
   },
   text: {
     fontSize: 24,

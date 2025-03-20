@@ -4,8 +4,7 @@ import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 const App = () => (
   <SafeAreaProvider>
     <SafeAreaView style={page.container}>
-      <Text style={flattenStyle}>The Bee Movie is about the sexual tension between a grown woman and a bee</Text>
-      <Text style={flattenStyle}>That bee secretly being Jerry Seinfeld</Text>
+      <Text style={flattenStyle}>Setting tab</Text>
     </SafeAreaView>
   </SafeAreaProvider>
 );
