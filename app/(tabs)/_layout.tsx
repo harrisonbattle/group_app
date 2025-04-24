@@ -4,46 +4,63 @@ import { Tabs } from 'expo-router';
 
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Animated, Easing } from 'react-native';
+import { useEffect, useRef } from 'react';
 
 const CustomTabBarButton = ({ children, onPress, isActive }: any) => {
+  const scaleAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(scaleAnim, {
+      toValue: isActive ? 1 : 0,
+      duration: 300,
+      easing: Easing.out(Easing.exp),
+      useNativeDriver: true,
+    }).start();
+  }, [isActive]);
+
+  const scale = scaleAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.7, 1],
+  });
+
+  const opacity = scaleAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  });
+
   return (
     <TouchableOpacity
       onPress={onPress}
       style={{
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 10,
+        height: 78,
         paddingHorizontal: 20,
-      }}>
-      {isActive && (
-        <View
-          style={{
-            position: 'absolute',
-            top: 5,
-            width: 60, // Larger size to cover the text
-            height: 140, // Larger size to cover the text
-            borderRadius: 40, // Circular shape
-            backgroundColor: 'rgba(255, 246, 148, 0.5)', // Circle color
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        />
-      )}
-      <Text
+        position: 'relative',
+      }}
+    >
+      <Animated.View
         style={{
-          color: isActive ? '#FFF694' : '#FFFBCE',
-          fontSize: 16,
-          fontWeight: 'bold',
-          zIndex: 1, // Ensure text stays on top of the circle
-        }}>
-        {children}
-      </Text>
+          position: 'absolute',
+          top: 10,
+          width: 60,
+          height: 60,
+          borderRadius: 30,
+          backgroundColor: 'rgba(255, 246, 148, 1)',
+          justifyContent: 'center',
+          alignItems: 'center',
+          transform: [{ scale }],
+          opacity,
+        }}
+      />
+      <View style={{ zIndex: 1 }}>{children}</View>
     </TouchableOpacity>
   );
 };
+
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -51,19 +68,18 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#FFF694',
-        tabBarInactiveTintColor: '#FFFBCE',
         headerShown: false,
         tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           ios: {
             position: 'absolute',
-            backgroundColor: 'transparent', // To avoid background blocks
+            bottom: 0,
+            backgroundColor: '#102920', // To avoid background blocks
             borderTopWidth: 0, // Remove default top border
           },
           default: {
-            backgroundColor: 'transparent', // Make the background transparent
+            backgroundColor: '#102920', // Make the background transparent
+            borderTopWidth: 0,
           },
         }),
       }}>
@@ -71,9 +87,9 @@ export default function TabLayout() {
         name="events"
         options={{
           title: 'Events',
-          tabBarIcon: ({ color, focused }) => (
-            <CustomTabBarButton isActive={focused} onPress={() => {}}>
-              <IconSymbol size={20} name="party.popper.fill" color={color} />
+          tabBarButton: (props) => (
+            <CustomTabBarButton {...props} isActive={props.accessibilityState?.selected}>
+              <IconSymbol size={40} name="party.popper.fill" color={props.accessibilityState?.selected ? '#06402B' : '#FFFBCE'} />
             </CustomTabBarButton>
           ),
         }}
@@ -82,9 +98,9 @@ export default function TabLayout() {
         name="camera"
         options={{
           title: 'Camera',
-          tabBarIcon: ({ color, focused }) => (
-            <CustomTabBarButton isActive={focused} onPress={() => {}}>
-              <IconSymbol size={20} name="camera.fill" color={color} />
+          tabBarButton: (props) => (
+            <CustomTabBarButton {...props} isActive={props.accessibilityState?.selected}>
+              <IconSymbol size={40} name="camera.fill" color={props.accessibilityState?.selected ? '#06402B' : '#FFFBCE'} />
             </CustomTabBarButton>
           ),
         }}
@@ -93,9 +109,9 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <CustomTabBarButton isActive={focused} onPress={() => {}}>
-              <IconSymbol size={20} name="house.fill" color={color} />
+          tabBarButton: (props) => (
+            <CustomTabBarButton {...props} isActive={props.accessibilityState?.selected}>
+              <IconSymbol size={40} name="house.fill" color={props.accessibilityState?.selected ? '#06402B' : '#FFFBCE'} />
             </CustomTabBarButton>
           ),
         }}
@@ -104,9 +120,9 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color, focused }) => (
-            <CustomTabBarButton isActive={focused} onPress={() => {}}>
-              <IconSymbol size={20} name="person.fill" color={color} />
+          tabBarButton: (props) => (
+            <CustomTabBarButton {...props} isActive={props.accessibilityState?.selected}>
+              <IconSymbol size={40} name="person.fill" color={props.accessibilityState?.selected ? '#06402B' : '#FFFBCE'} />
             </CustomTabBarButton>
           ),
         }}
@@ -115,20 +131,9 @@ export default function TabLayout() {
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: ({ color, focused }) => (
-            <CustomTabBarButton isActive={focused} onPress={() => {}}>
-              <IconSymbol size={20} name="gear" color={color} />
-            </CustomTabBarButton>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="camera_test"
-        options={{
-          title: 'Camera_Test',
-          tabBarIcon: ({ color, focused }) => (
-            <CustomTabBarButton isActive={focused} onPress={() => {}}>
-              <IconSymbol size={20} name="gear" color={color} />
+          tabBarButton: (props) => (
+            <CustomTabBarButton {...props} isActive={props.accessibilityState?.selected}>
+              <IconSymbol size={40} name="gear" color={props.accessibilityState?.selected ? '#06402B' : '#FFFBCE'} />
             </CustomTabBarButton>
           ),
         }}
