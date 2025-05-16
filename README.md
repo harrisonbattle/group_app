@@ -1,48 +1,114 @@
-# Welcome to your Expo app 👋
+# User Guide: FotoFlow Application 
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Overview
 
-## Get started
+Welcome to FotoFlow, a digital camera app designed to capture and share event moments effortlessly. This app turns your phone into a digital disposable camera, perfect for weddings, birthdays, family gatherings, or any special occasion. FotoFlow makes sharing photos simple and memorable, preserving those cherished moments in a unified event gallery. **Note:** Users must sign in to create or join events and access any app features.
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+* **User Authentication:** Users must sign in to access the app’s main features, ensuring secure and personalized event management.
+* **Instant Photo Capture:** Capture photos directly within the app without switching to the phone’s default camera.
+* **Event Creation:** Hosts can create personalized events and generate unique QR codes for guest access.
+* **Secure Guest Access:** Guests can join events by scanning a QR code without needing an account.
+* **Private Local Storage:** Photos are stored directly on the host’s device, ensuring privacy and fast access.
+* **Delayed Gallery Reveal:** Hosts control when guests can view submitted photos, preserving the surprise element.
+* **Offline Functionality:** Works without an internet connection, perfect for remote events.
+* **Simple, Intuitive Interface:** Minimal design for ease of use, even for non-tech-savvy users.
 
-2. Start the app
+## Technologies Used
 
-   ```bash
-    npx expo start
-   ```
+* **React Native:** Cross-platform app framework for building the mobile app.
+* **Expo:** Simplifies development and testing of React Native apps.
+* **QR Code Generation:** Enables fast, contactless event joining.
+* **JavaScript:** Core language for application logic.
+* **Local File Storage:** Secure, offline photo management.
 
-In the output, you'll find options to open the app in a
+## Installation
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Prerequisites
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+* Node.js installed on your system.
+* Expo CLI for building and testing the app.
+* Git for version control.
 
-## Get a fresh project
+### Steps to Run Locally
 
-When you're ready, run:
+1. Clone the repository:
 
 ```bash
-npm run reset-project
+git clone https://github.com/battletatakai/group_app.git
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Navigate to the project directory:
 
-## Learn more
+```bash
+cd group_app
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Install dependencies:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npm install
+```
 
-## Join the community
+4. Start the app:
+
+```bash
+npx expo start
+```
+
+## Getting Started
+
+### Registering and Logging In
+
+1. Open the app.
+2. Tap the **Sign Up** button to create a new account.
+3. Enter your email and a secure password.
+4. Log in with your newly created account to access all features.
+
+### Creating an Event
+
+1. After logging in, tap the **Create Event** button.
+2. Enter the event name and optional description.
+3. Generate a unique QR code for guest access.
+
+### Joining an Event
+
+* Scan the QR code to access the camera and start capturing memories. **Note:** You must be logged in to join an event.
+
+### Viewing the Gallery
+
+* Photos become visible based on the host’s reveal settings. Only registered users can view galleries.
+
+## Troubleshooting
+
+* **App Not Starting:** Ensure all dependencies are installed.
+* **QR Code Not Scanning:** Make sure the QR code is clear and within frame.
+* **Photos Not Saving:** Check device storage permissions.
+
+## Future Enhancements
+
+* **Cloud Storage:** Backup and multi-device access for event photos.
+* **In-App Editing Tools:** For better photo organization and management.
+* **Guest Analytics:** Gain insights into guest engagement during events.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Community and Support
+
+Join the Expo community for support and collaboration:
+
+* **GitHub:** [Project Repository](https://github.com/battletatakai/group_app.git)
+* **Discord:** [Expo Community](https://discord.gg/expo)
+
+## References
+
+* [Expo Documentation](https://docs.expo.dev/)
+* [React Native Documentation](https://reactnative.dev/)
+* [QR Code Generation Library](https://github.com/mebjas/html5-qrcode)
+
 
 Join our community of developers creating universal apps.
 
